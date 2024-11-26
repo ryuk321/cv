@@ -41,7 +41,7 @@ export default function Portfolio() {
           <h2 className="text-3xl font-bold text-blue-400 mb-4">About Me</h2>
           <p className="text-gray-300 leading-relaxed">
             I’m Bijay Shrestha, a passionate professional with expertise in
-            counseling, business studies, and emerging technologies. I thrive
+            counseling, business studies, Accounting and emerging technologies. I thrive
             on solving complex challenges and building impactful solutions.
           </p>
         </div>
