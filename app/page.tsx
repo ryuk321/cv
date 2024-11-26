@@ -7,15 +7,35 @@ export default function Portfolio() {
       {/* Hero Section */}
       <header className="bg-gradient-to-r from-blue-500 to-purple-600 py-16">
         <div className="container mx-auto px-4 text-center">
-        <div className="w-40 h-40 rounded-full overflow-hidden shadow-lg mb-4">
-        <Image 
-          src="/profile.jpg" // Path to the image in the public folder
-          alt="My Profile Picture"
-          width={160} // Adjust width
-          height={160} // Adjust height
-          objectFit="cover" // Ensures the image fits well
-        />
-      </div>
+          <div className="flex justify-right ">
+          <div className="mt-6 justify-right">
+            <a
+              href="./login"
+              className="bg-white text-blue-600 py-3 px-6 rounded-full font-semibold hover:bg-gray-200"
+            >
+              Login
+            </a>
+          </div>
+            
+            
+            </div>
+          {/* Profile Picture*/}
+          <div className="flex justify-center">
+
+
+            <div className="w-40 h-40 rounded-full overflow-hidden shadow-lg mb-4">
+              <Image
+                src="/profile.jpg" // Path to the image in the public folder
+                alt="My Profile Picture"
+                width={160} // Adjust width
+                height={160} // Adjust height
+                objectFit="cover" // Ensures the image fits wellz
+              />
+            </div>
+
+
+          </div>
+
           <h1 className="text-5xl font-extrabold text-white ">Bijay Shrestha</h1>
           <p className="text-lg mt-4">Aspiring Professional | Tech Enthusiast</p>
           <div className="mt-6">
