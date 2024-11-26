@@ -1,5 +1,6 @@
 import React from "react";
 
+
 import Image from 'next/image'
 export default function Portfolio() {
   return (
@@ -7,29 +8,14 @@ export default function Portfolio() {
       {/* Hero Section */}
       <header className="bg-gradient-to-r from-blue-500 to-purple-600 py-16">
         <div className="container mx-auto px-4 text-center">
-          <div className="flex justify-right ">
-          <div className="mt-6 justify-right">
-            <a
-              href="./login"
-              className="bg-white text-blue-600 py-3 px-6 rounded-full font-semibold hover:bg-gray-200"
-            >
-              Login
-            </a>
-          </div>
-            
-            
-            </div>
-          {/* Profile Picture*/}
-          <div className="flex justify-center">
-
-
-            <div className="w-40 h-40 rounded-full overflow-hidden shadow-lg mb-4">
+        <div className="flex justify-center align-center">
+            <div className=" w-40 h-40 rounded-full overflow-hidden shadow-lg mb-4  ">
               <Image
                 src="/profile.jpg" // Path to the image in the public folder
                 alt="My Profile Picture"
                 width={160} // Adjust width
                 height={160} // Adjust height
-                objectFit="cover" // Ensures the image fits wellz
+                objectFit="cover" // Ensures the image fits well
               />
             </div>
 
@@ -55,7 +41,7 @@ export default function Portfolio() {
           <h2 className="text-3xl font-bold text-blue-400 mb-4">About Me</h2>
           <p className="text-gray-300 leading-relaxed">
             I’m Bijay Shrestha, a passionate professional with expertise in
-            counseling, business studies, and emerging technologies. I thrive
+            counseling, business studies, Accounting and emerging technologies. I thrive
             on solving complex challenges and building impactful solutions.
           </p>
         </div>
