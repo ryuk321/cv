@@ -1,5 +1,5 @@
 import React from "react";
-import ProfilePicture from "../src/components/ProfilePicture"
+
 
 import Image from 'next/image'
 export default function Portfolio() {
