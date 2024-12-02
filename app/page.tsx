@@ -1,6 +1,6 @@
 import React from "react";
 import { NextUIProvider } from "@nextui-org/react";
-import { Navigation, UI } from "./components"
+import { Navigation,  } from "./components"
 import { GlobalProvider } from "./context/GlobalContext";
 
 
