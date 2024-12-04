@@ -26,27 +26,18 @@ export default function Portfolio() {
           </section>
 
           {/* Skills Section */}
-          <div className = "Container">
+          <div className = "container">
           <Navigation.Skills />
 
           </div>
-        
-          {/* <div className="Container">
-            <h2 className="text-3xl font-bold text-center text-blue-400 mb-6 mt-6">
-              My Skills
-            </h2>
-            <div className="flex flex-wrap items-center justify-center">
-              <UI.cards title="Python" secodaryTitle="8 Projects" img_source="./python.png" />
-              <UI.cards title="Next JS" secodaryTitle="5 Projects" img_source="./next.svg" />
-              <UI.cards title="Php" secodaryTitle="3 Projects" img_source="./php1.png" />
-              <UI.cards title="Wordpress" secodaryTitle="5 Projects" img_source="./wordpress1.png" />
-              <UI.cards title="Microsoft Office" secodaryTitle="Pro" img_source="./office.png" />
-            </div>
-          </div> */}
 
+          <div className = "py-10 bg-gray-800 text-center">
+          <Navigation.ProfessionalSkills />
+
+          </div>
 
           {/* Contact Section */}
-          <footer id="contact" className="py-10 bg-gray-800 text-center">
+          <footer id="contact" className="py-10 bg-gray-900 text-center">
             <div className="container mx-auto px-4">
               <h2 className="text-2xl font-bold text-blue-400 mb-4">Get in Touch</h2>
               <p className="text-gray-400">

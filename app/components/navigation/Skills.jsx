@@ -8,18 +8,18 @@ export default function Skills() {
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    arrows: false,
+    arrows: true,
   };
 
   return (
     <div className="flex flex-col justify-center items-center mb-6 px-4">
       <h2 className="text-3xl font-bold text-center text-blue-400 mb-6 mt-6">
-        My Skills
+        My Technical Skills <span className="md:hidden inline ml-2">&#8594;</span>
       </h2>
       {isMobile ? (
         <Slider {...settings} className="w-full max-w-md">

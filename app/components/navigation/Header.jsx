@@ -22,11 +22,11 @@ const Header = () => {
       <div
         className={`fixed transition-all duration-300  
           ${isScrolled
-            ? "top-[0.5%]  left-6    w-12 h-12 "
+            ? "top-[0.1%]  left-7 mt-4   w-12 h-12 "
             : "my-10 top-[10%] left-1/2 w-30 h-30   transform -translate-x-1/2 -translate-y-1/2"
           } ${menuOpen 
             ? " top-2/2 left-1/4 w-30 h-30 transition-all duration-300" 
-            : "my-10 top-[10%] left-1/2 w-30 h-30   transform -translate-x-1/2 -translate-y-1/2"}
+            : "my-8 top-[10%] left-1/2 w-30 h-30   transform -translate-x-1/2 -translate-y-1/2"}
            rounded-full overflow-hidden shadow-lg mt-9 z-50 
           
            `}
