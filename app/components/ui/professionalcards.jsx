@@ -44,7 +44,7 @@
 // }
 
 "use client"
-import { Card, CardHeader, CardBody, CardFooter, Divider, Link, Image } from "@nextui-org/react";
+import { Card, CardHeader, CardBody,  Divider,  Image } from "@nextui-org/react";
 import { useState } from "react";
 
 export default function ProfessionalCards({
@@ -52,7 +52,7 @@ export default function ProfessionalCards({
   url = "www.unknown.com",
   details = ".....",
   image = "./profile.jpg",
-  externalUrl = url,
+  
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
