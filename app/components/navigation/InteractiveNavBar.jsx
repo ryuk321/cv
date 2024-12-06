@@ -185,19 +185,20 @@ export default function InteractiveNavBar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full ${
+      className={`fixed top-0 left-0 w-full  ${
         isScrolled ? "bg-gray-900" : "bg-transparent"
       } text-white p-4 z-50 transition-all duration-300`}
     >
-      <div className="container mx-2 flex justify-between">
+      <div className="container mx-2 flex justify-between items-end ">
         {/* Title centered */}
         <div className={`text-2xl font-semibold ml-8`}>
-          {isScrolled ? "Prince Shrestha" : "My Portfolio"}
+          <Link href="/">{isScrolled ? "Prince Shrestha" : "My Portfolio"}</Link>
+          
         </div>
 
         {/* Hamburger icon for small screens */}
         <button
-          className="md:hidden block text-white focus:outline-none mr-4"
+          className="md:hidden block text-white focus:outline-none mr-2"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           <svg
@@ -217,7 +218,7 @@ export default function InteractiveNavBar() {
         </button>
 
         {/* Links: Hidden on small screens, shown on medium+ */}
-        <div className="hidden md:flex space-x-9 m-2">
+        <div className="hidden md:flex space-x-9  flex items-end">
           <Link
             href="/"
             className="py-2 px-4 rounded-md hover:bg-white hover:text-blue-600 transition duration-300"
@@ -235,6 +236,12 @@ export default function InteractiveNavBar() {
             className="py-2 px-4 rounded-md hover:bg-white hover:text-blue-600 transition duration-300"
           >
             Register
+          </Link>
+          <Link
+            href="/ucan"
+            className="py-2 px-4 rounded-md hover:bg-white hover:text-blue-600 transition duration-300"
+          >
+            Ucan / USA
           </Link>
         </div>
       </div>
@@ -262,6 +269,12 @@ export default function InteractiveNavBar() {
             className="block py-2 px-4 rounded-md hover:bg-white hover:text-blue-600 transition duration-300"
           >
             Register
+          </Link>
+          <Link
+            href="/ucan"
+            className="block py-2 px-4 rounded-md hover:bg-white hover:text-blue-600 transition duration-300"
+          >
+            Ucan / USA
           </Link>
         </div>
       )}

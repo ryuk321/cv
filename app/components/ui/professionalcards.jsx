@@ -44,52 +44,63 @@
 // }
 
 "use client"
-import { Card, CardHeader, CardBody,  Divider,  Image } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Divider, Image, CardFooter, Link } from "@nextui-org/react";
 import { useState } from "react";
 
 export default function ProfessionalCards({
-  name = "Unknown",
-  url = "www.unknown.com",
-  details = ".....",
-  image = "./profile.jpg",
-  
+    name = "Unknown",
+    url = "www.unknown.com",
+    details = ".....",
+    image = "./profile.jpg",
+    key = "key",
+    redirect = false,
+    cardbody = true
+
 }) {
-  const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
 
-  const toggleReadMore = () => {
-    setIsExpanded(!isExpanded);
-  };
+    const toggleReadMore = () => {
+        setIsExpanded(!isExpanded);
+    };
 
-  return (
-    <Card className="max-w-[400px] bg-gray-900">
-      <CardHeader className="flex gap-3">
-        <Image
-          alt="nextui logo"
-          height={40}
-          radius="sm"
-          src={image}
-          width={40}
-        />
-        <div className="flex flex-col">
-          <p className="text-md text-white text-left">{name}</p>
-          <p className="text-small text-default-500">{url}</p>
-        </div>
-      </CardHeader>
-      <Divider />
-      <CardBody>
-        <p className="text-white px-5">
-          {isExpanded ? details : `${details.substring(0, 100)}...`}
-          <button
-          onClick={toggleReadMore}
-          className="text-blue-400 underline mt-2 text-sm"
-        >
-          {isExpanded ? "Read Less" : "Read More"}
-        </button>
-        </p>
-        
-      </CardBody>
-      <Divider />
-      
-    </Card>
-  );
+    return (
+        <Card className="max-w-[400px] bg-gray-900">
+            <CardHeader className="flex gap-3">
+                <Image
+                    alt="nextui logo"
+                    height={40}
+                    radius="sm"
+                    src={image}
+                    width={40}
+                />
+                <div className="flex flex-col">
+                    <p className="text-md text-white text-left">{name}</p>
+                    <p className="text-small text-default-500">{url}</p>
+                </div>
+            </CardHeader>
+            <Divider />
+            {cardbody &&
+                <CardBody>
+                    <p className="text-white px-5">
+                        {isExpanded ? details : `${details.substring(0, 100)}...`}
+                        <button
+                            onClick={toggleReadMore}
+                            className="text-blue-400 underline mt-2 text-sm"
+                        >
+                            {isExpanded ? "Read Less" : "Read More"}
+                        </button>
+                    </p>
+
+                </CardBody>}
+            <Divider />
+            {redirect && <CardFooter>
+                <Link isExternal showAnchorIcon href={`https://${url}`}
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    Visit this University.
+                </Link>
+            </CardFooter>}
+
+        </Card>
+    );
 }
