@@ -378,7 +378,7 @@ async function fetchUniversityLogo(domain: string): Promise<string | null> {
 }
 
 export default function InteractiveMap() {
-  const [selectedState, setSelectedState] = useState<string | null>(null);
+  const [selectedState, setSelectedState] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [logoCache, setLogoCache] = useState<Record<string, string>>({});
 
@@ -398,15 +398,15 @@ export default function InteractiveMap() {
         }
       });
     }
-  }, [selectedState,logoCache]);
+  }, [selectedState]);
 
 
   const filteredUniversities =
   selectedState && searchQuery
-    ? (statesData[selectedState] || []).filter((university) =>
-        university.name.toLowerCase().includes(searchQuery.toLowerCase()) // Access 'name' property
+    ? statesData[selectedState].filter((university) =>
+        university.name.toLowerCase().includes(searchQuery.toLowerCase())
       )
-    : [];
+    : statesData[selectedState] || [];
 
   return (
     <div className="flex flex-col items-center">
@@ -471,14 +471,13 @@ export default function InteractiveMap() {
               filteredUniversities.map((university, index) => (
                 <div
                   key={index}>
+                
                   <ProfessionalCards
                    name={university.name} 
                    url={university.domain} 
                    image={logoCache[university.name]}
                    cardbody={false}
-                   redirect={true}
-                 
-                 />
+                   redirect={true} />
                 </div>
            
               ))
