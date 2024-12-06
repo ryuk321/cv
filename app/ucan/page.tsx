@@ -251,7 +251,9 @@ import {
   Geographies,
   Geography,
   Annotation,
+  
 } from "react-simple-maps";
+import { GeoJSON } from "geojson";
 import ProfessionalCards from "@/app/components/ui/professionalcards";
 
 // TopoJSON for US states
@@ -316,7 +318,10 @@ const statesData: Record<string, { name: string; domain: string }[]> = {
     
   ],
   Arkansas: [],
-  California: ["Stanford University", "UC Berkeley", "UCLA"],
+  California: [
+    { name: "Stanford University", domain: "stanford.edu" },
+    { name: "UC Berkeley", domain: "berkeley.edu" },
+    { name: "UCLA", domain: "ucla.edu" }],
   Colorado: [],
   Connecticut: [],
   Delaware: [],
@@ -377,7 +382,7 @@ export default function InteractiveMap() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [logoCache, setLogoCache] = useState<Record<string, string>>({});
 
-  const handleStateClick = (geo: any) => {
+  const handleStateClick = (geo: GeoJSON.Feature<GeoJSON.Polygon, { name: string }>) => {
     const stateName = geo.properties.name;
     if (statesData[stateName]) {
       setSelectedState(stateName);
@@ -393,15 +398,15 @@ export default function InteractiveMap() {
         }
       });
     }
-  }, [selectedState]);
+  }, [selectedState,logoCache]);
 
 
   const filteredUniversities =
-    selectedState && searchQuery
-      ? statesData[selectedState].filter((university) =>
-        university.toLowerCase().includes(searchQuery.toLowerCase())
+  selectedState && searchQuery
+    ? (statesData[selectedState] || []).filter((university) =>
+        university.name.toLowerCase().includes(searchQuery.toLowerCase()) // Access 'name' property
       )
-      : statesData[selectedState] || [];
+    : [];
 
   return (
     <div className="flex flex-col items-center">
@@ -426,6 +431,7 @@ export default function InteractiveMap() {
                     subject={stateLabels[geo.properties.name].coordinates}
                     dx={0}
                     dy={0}
+                    connectorProps={{}}
                   >
                     <text
                       x="0"
