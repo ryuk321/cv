@@ -52,7 +52,6 @@ export default function ProfessionalCards({
     url = "www.unknown.com",
     details = ".....",
     image = "./profile.jpg",
-    key = "key",
     redirect = false,
     cardbody = true
 

@@ -246,7 +246,6 @@
 
 import React, { useState, useEffect } from "react";
 import InteractiveNavBar from "../components/navigation/InteractiveNavBar";
-import UI from "@/app/components/ui/professionalcards"
 import {
   ComposableMap,
   Geographies,
