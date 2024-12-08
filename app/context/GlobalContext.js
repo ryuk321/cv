@@ -9,10 +9,12 @@ const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState("light");
+  const [isOpen, setIsOpen] = useState(false);
+  const [universityUrl, setUniversityUrl] = useState("");
 
 
   return (
-    <GlobalContext.Provider value={{ menuOpen, setMenuOpen, theme, setTheme }}>
+    <GlobalContext.Provider value={{ menuOpen, setMenuOpen, theme, setTheme, isOpen , setIsOpen, universityUrl,setUniversityUrl }}>
       {children}
     </GlobalContext.Provider>
   );

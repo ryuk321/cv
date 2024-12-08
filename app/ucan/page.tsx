@@ -246,15 +246,19 @@
 
 import React, { useState, useEffect } from "react";
 import InteractiveNavBar from "../components/navigation/InteractiveNavBar";
+import { Link } from "@nextui-org/react";
+
 import {
   ComposableMap,
   Geographies,
   Geography,
   Annotation,
-  
+
 } from "react-simple-maps";
-import { GeoJSON } from "geojson";
+import { UI } from "../components";
 import ProfessionalCards from "@/app/components/ui/professionalcards";
+import { useGlobalContext } from "@/app/context/GlobalContext";
+import { statesData } from "./Data";
 
 // TopoJSON for US states
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas/states-10m.json";
@@ -312,60 +316,7 @@ const stateLabels: Record<string, { coordinates: [number, number] }> = {
 };
 
 // Data: States and universities
-const statesData: Record<string, { name: string; domain: string }[]> = {
-  Arizona: [
-    { name: "The University of Alabama", domain: "https://www.ua.edu/" },
-    
-  ],
-  Arkansas: [],
-  California: [
-    { name: "Stanford University", domain: "stanford.edu" },
-    { name: "UC Berkeley", domain: "berkeley.edu" },
-    { name: "UCLA", domain: "ucla.edu" }],
-  Colorado: [],
-  Connecticut: [],
-  Delaware: [],
-  Florida: [],
-  Georgia: [],
-  Idaho: [],
-  Illinois: [],
-  Indiana: [],
-  Kansas: [],
-  Kentucky: [],
-  Louisiana: [],
-  Maryland: [],
-  Massachusetts: [],
-  Michigan: [],
-  Minnesota: [],
-  Mississippi: [],
-  Missouri: [],
-  Montana: [],
-  Nebraska: [],
-  Nevada: [],
-  "New Hampshire": [],
-  "New Jersey": [],
-  "New Mexico": [],
-  "New York City": [],
-  "North Carolina": [],
-  "South Carolina": [],
-  Ohio: [],
-  Oklahoma: [],
-  Oregon: [],
-  Pennsylvania: [],
-  "Rhode Island": [],
-  "South Dakota": [],
-  Tennessee: [],
-  Texas: [ 
-    { name: "University of Texas at Austin", domain: "utexas.edu" },
-    { name: "Texas A&M University", domain: "tamu.edu" },
-    { name: "Rice University", domain: "rice.edu" },],
-  Utah: [],
-  Virginia: [],
-  Washington: [],
-  "Washington DC": [],
-  "West Virginia": [],
-  Wisconsin: [],
-};
+const stateData = statesData
 
 // Fetch university logo
 async function fetchUniversityLogo(domain: string): Promise<string | null> {
@@ -381,6 +332,18 @@ export default function InteractiveMap() {
   const [selectedState, setSelectedState] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [logoCache, setLogoCache] = useState<Record<string, string>>({});
+  const { isOpen, setIsOpen } = useGlobalContext();
+  const { universityUrl, setUniversityUrl } = useGlobalContext();
+
+  const handleOpenModal = (url: string) => {
+    setUniversityUrl(url);
+    setIsOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsOpen(false);
+    setUniversityUrl('');
+  };
 
   const handleStateClick = (geo: GeoJSON.Feature<GeoJSON.Polygon, { name: string }>) => {
     const stateName = geo.properties.name;
@@ -398,19 +361,22 @@ export default function InteractiveMap() {
         }
       });
     }
-  }, [selectedState]);
+  }, [selectedState,logoCache]);
 
 
   const filteredUniversities =
-  selectedState && searchQuery
-    ? statesData[selectedState].filter((university) =>
+    selectedState && searchQuery
+      ? statesData[selectedState].filter((university) =>
         university.name.toLowerCase().includes(searchQuery.toLowerCase())
       )
-    : statesData[selectedState] || [];
+      : statesData[selectedState] || [];
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center ">
       <InteractiveNavBar />
+      <div className="d"><h1>Select your State!</h1></div>
+
+
       <ComposableMap projection="geoAlbersUsa" className="w-full h-auto">
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
@@ -443,8 +409,11 @@ export default function InteractiveMap() {
                         fontWeight: "bold",
                       }}
                     >
-                      {geo.properties.name}
-                    </text>
+ {/* {`${geo.properties.name} ${
+    stateData[geo.properties.name] ? stateData[geo.properties.name].length : 0
+  }`}                     */}
+  {`${geo.properties.name}`} 
+  </text>
                   </Annotation>
                 )}
               </React.Fragment>
@@ -471,15 +440,43 @@ export default function InteractiveMap() {
               filteredUniversities.map((university, index) => (
                 <div
                   key={index}>
-                
+
                   <ProfessionalCards
-                   name={university.name} 
-                   url={university.domain} 
-                   image={logoCache[university.name]}
-                   cardbody={false}
-                   redirect={true} />
+                    name={university.name}
+                    url={university.domain}
+                    image={logoCache[university.name]}
+                    cardbody={false}
+                    redirect={true} 
+                    details = {university.detail}
+                    >
+                    
+                    <Link
+                      isExternal
+                      showAnchorIcon
+                      onClick={() => handleOpenModal(`https://${university.domain}`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="cursor-pointer"
+                    >
+                      Visit this University .
+                    </Link>
+                    {/* <button
+                      className="text-blue-600 hover:text-blue-800"
+                      onClick={() => handleOpenModal(`https://${university.domain}`)}
+                    >
+                      Visit Website
+                    </button> */}
+
+
+                  </ProfessionalCards>
+
+                  <UI.Modal isOpen={isOpen} onClose={handleCloseModal} url={universityUrl} />
+
+
+
                 </div>
-           
+
+
               ))
             ) : (
               <p className="text-gray-500 col-span-full">No universities found.</p>
@@ -490,175 +487,3 @@ export default function InteractiveMap() {
     </div>
   );
 }
-
-
-
-
-// 'use client';
-
-// import React, { useState, useEffect } from "react";
-// import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-
-// // TopoJSON for US states
-// const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas/states-10m.json";
-
-// // Data: States and universities
-// const statesData: Record<string, { name: string; domain: string }[]> = {
-//   Arizona: [{ name: "The University of Alabama", domain: "ua.edu" }],
-//   Arkansas: [],
-//   California: [
-//     { name: "Stanford University", domain: "stanford.edu" },
-//     { name: "UC Berkeley", domain: "berkeley.edu" },
-//     { name: "UCLA", domain: "ucla.edu" },
-//   ],
-//   Colorado: [],
-//   Connecticut: [],
-//   Delaware: [],
-//   Florida: [],
-//   Georgia: [],
-//   Idaho: [],
-//   Illinois: [],
-//   Indiana: [],
-//   Kansas: [],
-//   Kentucky: [],
-//   Louisiana: [],
-//   Maryland: [],
-//   Massachusetts: [],
-//   Michigan: [],
-//   Minnesota: [],
-//   Mississippi: [],
-//   Missouri: [],
-//   Montana: [],
-//   Nebraska: [],
-//   Nevada: [],
-//   "New Hampshire": [],
-//   "New Jersey": [],
-//   "New Mexico": [],
-//   "New York City": [],
-//   "North Carolina": [],
-//   "South Carolina": [],
-//   Ohio: [],
-//   Oklahoma: [],
-//   Oregon: [],
-//   Pennsylvania: [],
-//   "Rhode Island": [],
-//   "South Dakota": [],
-//   Tennessee: [],
-//   Texas: [
-//     { name: "University of Texas at Austin", domain: "utexas.edu" },
-//     { name: "Texas A&M University", domain: "tamu.edu" },
-//     { name: "Rice University", domain: "rice.edu" },
-//   ],
-//   Utah: [],
-//   Virginia: [],
-//   Washington: [],
-//   "Washington DC": [],
-//   "West Virginia": [],
-//   Wisconsin: [],
-// };
-
-// // Fetch logo function using Clearbit Logo API
-// async function fetchUniversityLogo(domain: string): Promise<string | null> {
-//   try {
-//     return `https://logo.clearbit.com/${domain}`;
-//   } catch (error) {
-//     console.error(`Error fetching logo for ${domain}:`, error);
-//     return null;
-//   }
-// }
-
-// export default function InteractiveMap() {
-//   const [selectedState, setSelectedState] = useState<string | null>(null);
-//   const [searchQuery, setSearchQuery] = useState<string>("");
-//   const [logoCache, setLogoCache] = useState<Record<string, string>>({}); // Cache for fetched logos
-
-//   const handleStateClick = (geo: any) => {
-//     const stateName = geo.properties.name;
-//     if (statesData[stateName]) {
-//       setSelectedState(stateName);
-//       setSearchQuery(""); // Reset search query when a state is clicked
-//     }
-//   };
-
-//   const filteredUniversities =
-//     selectedState && searchQuery
-//       ? statesData[selectedState].filter((university) =>
-//           university.name.toLowerCase().includes(searchQuery.toLowerCase())
-//         )
-//       : statesData[selectedState] || [];
-
-//   useEffect(() => {
-//     // Fetch logos for all universities in the selected state
-//     if (selectedState) {
-//       statesData[selectedState].forEach(async (university) => {
-//         if (!logoCache[university.name]) {
-//           const logo = await fetchUniversityLogo(university.domain);
-//           setLogoCache((prev) => ({ ...prev, [university.name]: logo || "" }));
-//         }
-//       });
-//     }
-//   }, [selectedState]);
-
-//   return (
-//     <div className="flex flex-col items-center h-auto pb-8">
-//       <ComposableMap projection="geoAlbersUsa" className="w-full h-auto">
-//         <Geographies geography={geoUrl}>
-//           {({ geographies }) =>
-//             geographies.map((geo) => (
-//               <Geography
-//                 key={geo.rsmKey}
-//                 geography={geo}
-//                 onClick={() => handleStateClick(geo)}
-//                 style={{
-//                   default: { fill: "#D6D6DA", outline: "none" },
-//                   hover: { fill: "#4A90E2", outline: "none" },
-//                   pressed: { fill: "#2C3E50", outline: "none" },
-//                 }}
-//               />
-//             ))
-//           }
-//         </Geographies>
-//       </ComposableMap>
-
-//       {selectedState && (
-//         <div className="mt-6 w-full max-w-4xl px-4">
-//           <h2 className="text-2xl font-semibold text-blue-600 mb-4">
-//             Universities in {selectedState}
-//           </h2>
-//           <input
-//             type="text"
-//             placeholder="Search for a university..."
-//             className="w-full p-3 mb-4 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 text-black"
-//             value={searchQuery}
-//             onChange={(e) => setSearchQuery(e.target.value)}
-//           />
-//           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-//             {filteredUniversities.length > 0 ? (
-//               filteredUniversities.map((university, index) => (
-//                 <div
-//                   key={index}
-//                   className="p-4 bg-white shadow-lg rounded-lg border border-gray-200 flex flex-col items-center"
-//                 >
-//                   <h3 className="text-lg font-medium text-gray-700">
-//                     {university.name}
-//                   </h3>
-//                   {logoCache[university.name] ? (
-//                     <img
-//                       src={logoCache[university.name]}
-//                       alt={`${university.name} Logo`}
-//                       className="w-16 h-16 mt-4"
-//                     />
-//                   ) : (
-//                     <p className="text-sm text-gray-400 mt-4">Logo not available</p>
-//                   )}
-//                 </div>
-//               ))
-//             ) : (
-//               <p className="text-gray-500 col-span-full">No universities found.</p>
-//             )}
-//           </div>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }

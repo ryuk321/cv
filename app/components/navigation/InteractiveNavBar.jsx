@@ -157,6 +157,7 @@ import Link from "next/link";
 import { useGlobalContext } from "../../context/GlobalContext";
 
 export default function InteractiveNavBar() {
+
   const [isScrolled, setIsScrolled] = useState(false);
   const { menuOpen, setMenuOpen } = useGlobalContext(); // State to toggle menu
   const menuRef = useRef(null); // Ref to detect clicks outside the menu
@@ -182,6 +183,8 @@ export default function InteractiveNavBar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuRef, setMenuOpen]);
+
+
 
   return (
     <nav
@@ -241,7 +244,7 @@ export default function InteractiveNavBar() {
             href="/ucan"
             className="py-2 px-4 rounded-md hover:bg-white hover:text-blue-600 transition duration-300"
           >
-            Ucan / USA
+             USA
           </Link>
         </div>
       </div>

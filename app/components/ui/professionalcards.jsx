@@ -45,7 +45,7 @@
 
 "use client"
 import { Card, CardHeader, CardBody, Divider, Image, CardFooter, Link } from "@nextui-org/react";
-import { useState } from "react";
+import {  useState } from "react";
 
 export default function ProfessionalCards({
     name = "Unknown",
@@ -53,14 +53,27 @@ export default function ProfessionalCards({
     details = ".....",
     image = "./profile.jpg",
     redirect = false,
-    cardbody = true
+    cardbody = true,
+    children
 
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
+    // const { isOpen, setIsOpen } = useGlobalContext();
+    // const { universityUrl, setUniversityUrl } = useGlobalContext();
+
 
     const toggleReadMore = () => {
         setIsExpanded(!isExpanded);
     };
+    // const handleOpenModal = (url) => {
+    //     setUniversityUrl(url);
+    //     setIsOpen(true);
+    // };
+
+    // const handleCloseModal = () => {
+    //     setIsOpen(false);
+    //     setUniversityUrl('');
+    // };
 
     return (
         <Card className="max-w-[400px] bg-gray-900">
@@ -90,16 +103,25 @@ export default function ProfessionalCards({
                         </button>
                     </p>
 
+
                 </CardBody>}
             <Divider />
-            {redirect && <CardFooter>
-                <Link isExternal showAnchorIcon href={`https://${url}`}
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    Visit this University.
-                </Link>
+            {!children && redirect && (
+                <CardFooter>
+                    <Link
+                        isExternal
+                        showAnchorIcon
+                        href={`https://${url}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Visit this University.
+                    </Link>
+                </CardFooter>
+            )}
+            {children && <CardFooter>
+                {children}
             </CardFooter>}
-
         </Card>
     );
 }
