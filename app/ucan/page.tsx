@@ -316,7 +316,7 @@ const stateLabels: Record<string, { coordinates: [number, number] }> = {
 };
 
 // Data: States and universities
-const stateData = statesData
+// const stateData = statesData
 
 // Fetch university logo
 async function fetchUniversityLogo(domain: string): Promise<string | null> {
