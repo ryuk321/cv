@@ -111,7 +111,7 @@
 // }
 
 
-'use client'
+// 'use client'
 
 // import React, { useState } from "react";
 // import InteractiveNavBar from "../components/navigation/InteractiveNavBar"
@@ -258,7 +258,7 @@ import {
 import { UI } from "../components";
 import ProfessionalCards from "@/app/components/ui/professionalcards";
 import { useGlobalContext } from "@/app/context/GlobalContext";
-import { statesData } from "./Data";
+// import { statesData } from "./Data";
 
 // TopoJSON for US states
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas/states-10m.json";
@@ -316,7 +316,21 @@ const stateLabels: Record<string, { coordinates: [number, number] }> = {
 };
 
 // Data: States and universities
-// const stateData = statesData
+// const stateData = async () => {
+
+//     try {
+//       const response = await fetch('/api/fetchUniversityDataAll');
+//       if (response.ok) {
+//         const data = await response.json();
+//         return data;
+//       } else {
+//         console.error("Failed to fetch universities");
+//       }
+//     } catch (error) {
+//       console.error("Error fetching universities:", error);
+//     }
+  
+//   const statesData = stateData()
 
 // Fetch university logo
 async function fetchUniversityLogo(domain: string): Promise<string | null> {
@@ -329,11 +343,31 @@ async function fetchUniversityLogo(domain: string): Promise<string | null> {
 }
 
 export default function InteractiveMap() {
+  const [statesData, setUniversities] = useState<Record<string, Array<{ name: string, domain: string }>>>({});
   const [selectedState, setSelectedState] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [logoCache, setLogoCache] = useState<Record<string, string>>({});
   const { isOpen, setIsOpen } = useGlobalContext();
   const { universityUrl, setUniversityUrl } = useGlobalContext();
+
+  useEffect(() => {
+    const fetchUniversities = async () => {
+      try {
+        const response = await fetch('/api/fetchUniversityDataAll');
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data)
+          setUniversities(data);
+        } else {
+          console.error("Failed to fetch universities");
+        }
+      } catch (error) {
+        console.error("Error fetching universities:", error);
+      }
+    };
+
+    fetchUniversities();
+  }, []);
 
   const handleOpenModal = (url: string) => {
     setUniversityUrl(url);
@@ -447,7 +481,7 @@ export default function InteractiveMap() {
                     image={logoCache[university.name]}
                     cardbody={false}
                     redirect={true} 
-                    details = {university.detail}
+                    
                     >
                     
                     <Link
@@ -487,3 +521,92 @@ export default function InteractiveMap() {
     </div>
   );
 }
+
+
+//Above code is the final working prototype as is hosted in vercel
+// app/ucan/page.tsx
+
+// 'use client';
+
+// import React, { useState, useEffect } from 'react';
+// import InteractiveNavBar from "@/app/components/navigation/InteractiveNavBar";
+// import ProfessionalCards from "@/app/components/ui/professionalcards";
+// import { Link } from "@nextui-org/react";
+
+// const InteractiveMap = () => {
+//   const [universities, setUniversities] = useState([]);
+//   const [searchQuery, setSearchQuery] = useState('');
+
+//   // Fetch universities from the API
+//   useEffect(() => {
+//     const fetchUniversities = async () => {
+//       try {
+//         const response = await fetch('/api/fetchUniversityDataAll');
+//         if (response.ok) {
+//           const data = await response.json();
+//           setUniversities(data);
+//         } else {
+//           console.error("Failed to fetch universities");
+//         }
+//       } catch (error) {
+//         console.error("Error fetching universities:", error);
+//       }
+//     };
+
+//     fetchUniversities();
+//   }, []);
+
+//   // Filter universities based on search query
+//   const filteredUniversities = universities.filter((university) =>
+//     university.name.toLowerCase().includes(searchQuery.toLowerCase())
+//   );
+
+//   return (
+//     <div className="flex flex-col items-center">
+//       <InteractiveNavBar />
+//       <h1>Select your State!</h1>
+
+//       <div className="mt-6 w-full max-w-4xl px-4">
+//         <h2 className="text-2xl font-semibold text-blue-600 mb-4">
+//           Universities
+//         </h2>
+//         <input
+//           type="text"
+//           placeholder="Search for a university..."
+//           value={searchQuery}
+//           onChange={(e) => setSearchQuery(e.target.value)}
+//           className="w-full p-3 mb-4 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+//         />
+//         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+//           {filteredUniversities.length > 0 ? (
+//             filteredUniversities.map((university, index) => (
+//               <div key={index}>
+//                 <ProfessionalCards
+//                   name={university.name}
+//                   url={university.domain}
+//                   cardbody={false}
+//                   redirect={true}
+//                   details={university.detail}
+//                 >
+//                   <Link
+//                     isExternal
+//                     showAnchorIcon
+//                     target="_blank"
+//                     rel="noopener noreferrer"
+//                     className="cursor-pointer"
+//                   >
+//                     Visit this University.
+//                   </Link>
+//                 </ProfessionalCards>
+//               </div>
+//             ))
+//           ) : (
+//             <p className="text-gray-500 col-span-full">No universities found.</p>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default InteractiveMap;

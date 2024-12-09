@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/navigation/InteractiveNavBar.jsx", "app/ucan/Data.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/navigation/InteractiveNavBar.jsx", "app/ucan/Data.js", "app/lib/db/db.js"],
   "exclude": ["node_modules"]
 }
