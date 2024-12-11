@@ -1,39 +1,23 @@
-FROM node:18-alpine AS base
+# Step 1: Use the Node.js image as a base
+FROM node:18-alpine
 
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
+# Step 2: Set the working directory in the container
 WORKDIR /app
 
+# Step 3: Copy package.json and package-lock.json for dependency installation
 COPY package*.json ./
-RUN npm ci --production
 
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Step 4: Install dependencies
+RUN npm install
+
+# Step 5: Copy the rest of the application code
 COPY . .
 
-ENV NEXT_TELEMETRY_DISABLED 1
-
+# Step 6: Build the Next.js application
 RUN npm run build
 
-FROM base AS runner
-WORKDIR /app
-
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-
-USER nextjs
-
+# Step 7: Expose the port that the Next.js app will run on
 EXPOSE 3000
 
-ENV PORT 3000
-
+# Step 8: Define the command to run the application
 CMD ["npm", "start"]
