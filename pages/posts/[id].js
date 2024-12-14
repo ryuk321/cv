@@ -1,9 +1,8 @@
 import { google } from 'googleapis';
-import fs from 'fs';
 
 
 export async function getServerSideProps({ query }) {
-    const credentials = JSON.parse(fs.readFileSync('./secret.json', 'utf8'));
+    const credentials = JSON.parse(process.env.GOOGLE_SHEETS_CREDENTIALS, 'utf8');
 
     const auth = new google.auth.GoogleAuth({
         credentials,
